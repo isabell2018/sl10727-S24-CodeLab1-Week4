@@ -7,7 +7,6 @@ public class Spawn : MonoBehaviour
 {
     public GameObject enemy;
     public GameObject player;
-
     public float time;
     // Start is called before the first frame update
     void Start()
@@ -18,7 +17,7 @@ public class Spawn : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
         time += Time.deltaTime;
         if (time > 5 && player.activeSelf)
         {
@@ -28,6 +27,7 @@ public class Spawn : MonoBehaviour
             Instantiate(enemy,enemy.transform.position,enemy.transform.rotation);
             enemy.transform.position = new Vector3(0f, 0f, 0f);
         }
+        
        
     }
 }

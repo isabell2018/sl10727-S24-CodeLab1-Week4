@@ -8,6 +8,7 @@ using UnityEngine.SocialPlatforms.Impl;
 
 public class Enemy : MonoBehaviour
 {
+    public static Enemy instance;
     public GameObject player;
     
     private Rigidbody rb;
@@ -17,6 +18,7 @@ public class Enemy : MonoBehaviour
     public GameObject score;
     public float scorenumber;
     private float time;
+
 
     // Start is called before the first frame update
     void Start()
@@ -44,14 +46,15 @@ public class Enemy : MonoBehaviour
         {
             if (player.activeSelf)
             {
+                Manager.instance.isGameOver = true;
                 Debug.Log("Game Over");
                 player.SetActive(false);
                 score.SetActive(false);
-                gameOver.SetActive(true);
-                GameOverText.text = "Game Over!"+
+                //gameOver.SetActive(true);
+                /*GameOverText.text = "Game Over!"+
                                     "\nFinal Score: " +
-                                    Manager.instance.Score +
-                                    "\nHigh Scores:\n" + Manager.instance.highScoresString;
+                                    Manager.instance.score +
+                                    "\nHigh Scores:\n" + Manager.instance.highScoresString;*/
             }
         }
     }

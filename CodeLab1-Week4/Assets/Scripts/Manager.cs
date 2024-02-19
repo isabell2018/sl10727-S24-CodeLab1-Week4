@@ -9,7 +9,8 @@ using UnityEngine.Serialization;
 
 public class Manager : MonoBehaviour
 {
-
+    bool refresh = false;
+    public bool isGameOver = false;
     public TMP_InputField playerNameInputField;
     // Custom class to hold both string and int values
     public class StringIntPair
@@ -35,8 +36,6 @@ public class Manager : MonoBehaviour
     public TextMeshProUGUI gameOver;
     private List<StringIntPair> highScores;
     public string highScoresString = "";
-    
-    
     public int score;
 
     public int Score
@@ -48,9 +47,7 @@ public class Manager : MonoBehaviour
         set
         {
             score = value;
-            
-            Debug.Log("score changed");
-            if (isHighScore(score))
+            if (isHighScore(score)&&isGameOver)
             {
                 int highScoreSlot = 0;
                 for (int i = 0; i < HighScores.Count; i++)
@@ -64,17 +61,19 @@ public class Manager : MonoBehaviour
                 }
                 StringIntPair newPair = 
                     new StringIntPair(playerName,score);
-                highScores.Insert(highScoreSlot, newPair);
+                    highScores.Insert(highScoreSlot, newPair);
                 highScores = highScores.GetRange(0, 5);
 
                 string scoreBoardText = "";
                 foreach (var highScore in highScores)
                 {
                     scoreBoardText += highScore.stringValue + "," + highScore.intValue + "\n";
-                } 
-                highScoresString = scoreBoardText; 
-                File.WriteAllText(FILE_FULL_PATH, highScoresString);
+                }
+                    highScoresString = scoreBoardText;
+                    File.WriteAllText(FILE_FULL_PATH, highScoresString);
             }
+            
+           
         }
     }
 
@@ -151,6 +150,15 @@ public class Manager : MonoBehaviour
         playerName = playerNameInputField.text;
         time += Time.deltaTime;
         scoreText.text = "Score: " + Score;
+
+        if (isGameOver&&highScoresString!=null&&refresh==false&&gameOver.text!=null)
+        {
+            Score+=0;
+            gameOver.text = "Game Over!\nFinal Score: " +
+                            Manager.instance.score +
+                            "\nHigh Scores:\n" + Manager.instance.highScoresString;
+            refresh = true;
+        }
     }
 
     public void ReloadScene()
